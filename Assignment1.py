@@ -74,7 +74,7 @@ R   17           147      17    r
 If we are going to encrypt a Georgian plaintext using the affine cipher, 
 how many possible keys are there, that is, what is the size of the key space?
 
-Our 'a' must have a modular multiplicative inverse, meaning that the greatest common denominator for
+Our 'a' must have a modular multiplicative inverse, meaning that the greatest common divisor for
 'a' and the length of the alphabet must be 1. So, for a 33-letter alphabet, 'a' cannot be a multiple
 of any of the multiples of 33, i.e. 'a' cannot be a multiple of 11 or 3. We are left with the following:
 
@@ -100,7 +100,7 @@ There are 660 possible keys using a Georgian (33-letter) alphabet.
 '''
 4. If an alphabet has 31 letters, what is the size of the key space using the affine cipher?
 
-Our 'a' must have a modular multiplicative inverse, meaning that the greatest common denominator for
+Our 'a' must have a modular multiplicative inverse, meaning that the greatest common divisor for
 'a' and the length of the alphabet must be 1. So, for a 31-letter alphabet, 'a' cannot be a multiple
 of any of the multiples of 31. But since 31 is prime, there are no numbers excluded. As a result, we 
 are left with all numbers 1 through 30, for a total of 30 possible 'a' values.
@@ -237,7 +237,7 @@ def inverse(a) :
 def encrypt_affine(letters, a, b):
     '''
     Function first checks that affine cipher is possible by making sure that 
-    the greatest common denominator between the length of the alphabet and the
+    the greatest common divisor between the length of the alphabet and the
     chosen 'a' value is equal to 1.
     
     Then, function takes each letter in letters parameter and obtains its numerical value,
@@ -255,7 +255,7 @@ def encrypt_affine(letters, a, b):
 def decrypt_affine(letters, a, b):
     '''
     Function first checks that affine cipher (decryption) is possible by making sure that 
-    the greatest common denominator between the length of the alphabet and the
+    the greatest common divisor between the length of the alphabet and the
     chosen 'a' value is equal to 1.
     
     Then, function takes each letter in letters parameter and obtains its numerical value,
@@ -281,7 +281,7 @@ print("Decrypted (affine): {0}".format(decrypt_affine(result, 3, 2)))
 
 '''
 The restrictions on the affine cypher means that there must be a modular 
-multiplicative inverse of a. So, the greatest common denominator between a
+multiplicative inverse of a. So, the greatest common divisor between a
 and the length of the alphabet (4, in this case) must be 1. That means that 
 for this problem, a can only equal 1 or 3. 
 '''

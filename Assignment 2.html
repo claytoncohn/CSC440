@@ -1,0 +1,140 @@
+<!doctype HTML>
+<html>
+
+<head>
+<meta charset="utf-8">
+<style>
+  body {font-family: Calibri, Georgia; font-size: 11pt; }
+  h1, h2, h3 {font-family: Cambria, Arial, Helvetica; font-weight: lighter}
+  h1 {color: #010819}
+  h2, h3 {color: #170108}
+  h1 {font-size: 26pt; }
+  h2 {font-size: 14pt; }
+  h3 {font-size: 12pt; }
+  pre {font-weight: bold}
+  .code, code {font-family: Courier New; font-weight: bold; }
+  table {border-radius: 5px; border: 2px solid black; }
+	td, th {border: 1px solid gray; }
+	ul.innerlist {list-style: none; margin: 0; padding: 0}
+	td {width: 12px; text-align: right}
+</style>
+</head>
+
+<body>
+<div id="content">
+<h1>CSC 440/Cryptography<br />Assignment 2</h1>
+<hr />
+<h2>Guidelines</h2>
+<p>
+Unless otherwise indicated, all plaintexts and ciphertexts are alphabetic, that is, they only consist of the letters of the alphabet.  In general, plaintexts will appear in lowercase and ciphertexts in uppercase.  The ciphersystems used here compute with the integer representations of the letters, which are 0 for a, 1 for b, ..., 25 for z.
+</p>
+<p><strong>Negative numbers mod 26</strong> When computing an additive inverse and perhaps in other situations you will get a negative integer.  To find that value mod 26, keep adding 26 until the value is in the range 0 to 25 inclusive.  For example, the value -95 mod 26 can be found by adding 104 (26 * 4) to -95 to get 9.
+</p>
+<p><strong>Multiplicative inverses mod 26</strong>
+For convenience, here is the table of multiplicative inverses mod 26:
+<table>
+<tr>
+<td style="text-align:left">x</td><td>1</td><td>3</td><td>5</td><td>7</td><td>9</td><td>11</td><td>15</td><td>17</td><td>19</td><td>21</td><td>23</td><td>25</td>
+</tr>
+<tr>
+<td>x&nbsp;<sup>-1</sup></td><td>1</td><td>9</td><td>21</td><td>15</td><td>3</td><td>19</td><td>7</td><td>23</td><td>11</td><td>5</td><td>17</td><td>25</td>
+</tr>
+</table>
+</p>
+<h2>65 points</h2>
+<p>1. (10 points) <strong>Breaking the affine cipher using a known plaintext attack</strong>  You've intercepted the ciphertext 'DEJXDIJYZ'. By bribing somebody you were able to find out that the first and second letters of the corresponding plaintext are 'sn'.
+<ol type="a">
+<li>Using the crib, find the encryption key, that is, determine <em>a</em> and <em>b</em> so that <em>ax</em>+<em>b</em>=<em>y</em> (mod 26) encrypts 'sn'  as 'DE', that is, when <em>x</em>=18 (the letter 's'), <em>y</em>=3 (D) and when <em>x</em>=13 (the letter 'n'), <em>y</em>=4 (E).
+</li>
+<li>Using the decryption formula <em>a</em><sup>-1</sup>(<em>y</em>+(-<em>b</em>))=<em>x</em> (mod 26), determine the corresponding decryption key for the encryption key you found in (a).
+</li>
+<li>Apply that decryption key to find the original plaintext for 'DEJXDIJYZ'.
+</li>
+</p>
+<p>
+Your answer will consist of values for <em>a</em>, <em>b</em>, <em>a<sup>-1</sup></em>, and <em>-b</em>, all expressed as values between 0 and 25 inclusive, and the plaintext word in letters.
+</p>
+</ol>
+</p>
+<p>(5 points) 2. <strong>Exercise 6, page 55</strong></p>
+<p>(10 points) 3. <span class="updated"><strong>Hill cipher encryption</strong></span> Given the Hill encryption matrix
+<pre>
+| 4  7 |
+| 5 11 |
+</pre>
+please do the following:
+<ol type="a">
+<li>Encrypt the plaintext "winter".  Your answer is the ciphertext containing six uppercase letters.
+<li>Calculate and write down the decryption matrix for the above encryption matrix.
+</ol>
+</p>
+<p>(20 points) 4. <strong>Vigen&egrave;re ciphertext break</strong> The following ciphertext was created using the Vigen&egrave;re cipher from an English plaintext.
+<ul>
+<li>First, determine the estimated key length using the technique from assignment 1 and explained in the textbook on p 19.
+<li>Next, use the technique described in section 2.3.3 (pp. 23-24) to find the key.  You might want to write a program for this.
+<li>Finally, provide the plaintext.
+</ul>
+</p>
+Ciphertext:
+<pre>
+LNKNWQXCKEWAZHVJWAEORNLUPSSAITOEROVNWUIWTVVTZSIFPUTDAGUUTGE
+VWHTAZGDIEBIPWSZJBUHDZOBELBLPQBQOWPPRLNYWJVWAEPABISFQBUDMVN
+QPDAEZQAWHVCMBOOXEKNORVHIGLOEOWSWHVLZRVEEPBBWHVLIFWIEDIOLTR
+JBFRFKDIGFOEPQAHNKPPRVEWWKGVSVAURGTFIMGRTYNWJVODATVJHKKVGKE
+FNQTLNFBACHCZAAGKAKIGFWEIUWSPYJPMELEJWAVWHROJRHNTWTYHDSUWAH
+OWKCEJRVWBRVTGDQYRSFLPRUSFJULUEKQZAKODAQGRCTQZEHDKKURLNKDIG
+VODABULNXIQTKTGAZUDPJXMZDDVKCGRNKDQFTUVOBVRNSUXNWIVJBYBATYC
+ZXLRPQAJAEZZRILVYBVQGFJIYOSFNBFRFWWKGVWYEKUFOLHLCRSJEJYBHRR
+MNQYSAIELNXKVVWAWPMEIIMAGRDRJSWENIRHTBZEUIGFHLWPWFSETQTNWEF
+JBUHSLXRRFTRJLQUENQXFRMVOPBUTEKBRVTYAARLEEHIEJEUEVVQTFWAXHT
+TDWSWHVYWAFLLOQBQSNDQPKTYAVFHEDALGRMVLZBEASHMSUODPPNWPVNQBG
+TFPPRSRVOMAWDRUQUDVVOBRDDZHGCXRJQMQWHVOIZHOSFMPWIYKXRWHRPQZ
+DYSAMKFUJALSRRVJBRUIECWAWHVOMCHRJKVNODVPIVOSROQTLVVPPRPTFOP
+BZTYWBVKAMAVBWBVAVUDSKUQAFODEVTWORZMPLSZKVZBWFNSVVNFSVRDRCU
+NVQIJDMQEUKWAVWWZHTGDKVIMGZOFNBUUEVIWEHYVWZFWOTKUCOEKAQGDNU
+WAZBHVWTGKIJBIEIRFIAGUOECQUDVVXMRQUICMQWOGQJYLSYPPVVASOBEDC
+KEPNYEDKZRHSGAKVDLCUJRHNZJLHFEUPWQRTYEANVMISIYOATAEURIJJWJV
+TLZGVQGKDMADTLNIYKIJPWEBOWPPRPACWGNUCYEXROAXKPNVAINQIHDRPIY
+POJPMKDCKHGGKEJWURJEEAZNOCFJKYXSZKVFWHRPQUDVVKVGKEFNQTLNFBA
+CHCZAAYDSKUMNUHVOMAWTFIMNPEDKQERNKDQFVUSFMPWWZPPNUEHQMFWTYW
+BVZOLHLSRRNWZQLTKKAVUCYWZYHSCUMYOWYKARQTZPBBWHVHQAQERJABFIV
+PGNQDZPQFSUSHQFKEUEVGKEKDQEGVFHCZHOWPPRMOLNVNOOWPPNWSFYQRWY
+JEZPOYVHTNQDUNPBRKVNEURBFPPXQENKNZBWFNSGKECWBGHRYWDVQGIAIQP
+YJGMGFHFBPBQOLNMQPESUBULNBEVTLTRZDVVASHMGRPLXTVVHNEBUPRNWTY
+DCVOMKFECHMAWMVIWVUSFIMOUIVBMKWRRYBFIRFIULPAEQAPUIGPAGKIJWJ
+FWRRYBJKITDQARWGQJYLSYICFWNVYMFVAIETLEEZIXRUFVYBVFAEJWGKEIA
+OVYEIANRUEEYMFDNUWCGKOIEBVHSWKZZBSVRMEDLJPIGHMVJBFDNUEUHVTK
+NCFWTFPPRUERZMEUEGKAVQGJKURFOEBQQHNTAQAPYRYKHUATUVBGOLXBRUR
+FNAJLLCDIIHCIAXGLNKDWHJHZDWCHIYWDRDLNWGFEEVJKNXTZKCFLNKNCFW
+IECBBJOFZIHWHFNQGLEJWTBQEZYIAKEIAOVYEFJTLWHVCMAHRRHKBQCCQAV
+RNJWBJKITDQUDVVWZELVVZEVWHRBMJIATPAVQICHCFWRRPQBQBLPEULCYEP
+BSEZJUBVTTWARVWZHTFXFWEKRQOFJMPDNWAMYPOIAARQSZXTRWHRJQQROWP
+PRQETAAFLTPKNUHRVWNGHRGQJYLSYEVTLNUABNLLRHTGKEWWKGVWZPPEHFV
+NMAFEJKVJKITDULFOEYTHVIFJAUDVVXMRQGIKCAGEUWVQLHFLMVQAWQBHUE
+NKZXWOUKBULSWKZVDMNATYDWRNMGKAKOKNUCVHGNVIECTRSOZJBVVDZOKHV
+SVZQAWHZODBOUDAWAZHZYPSDCKOKNQNFPJRDDUQKRGOWPMADPGWZRQTCUTR
+DDZJOGRCFJKYXSZKVFGIIAKGOYFLXBVIKABBWHFOMNWWYEKULHRRMNURZRM
+QDFREZEHSLHBPDNSAWOWAZJMQRNCUJLIUCHGFWAKEVTDNUXIYDNTEVTWHVB
+IPWSRJLNUGLIMAWSFJJBWHJELRVOWAIPKQLAAGLOEWVQWHZOKNQNFPXBVSZ
+XTLEEYAZRGOEA
+</pre>
+</p>
+<p>5. (20 points) <strong>Implement the Blum-Blum-Shub PRNG</strong> Section 2.10 (pp. 41-43) describes the Blum-Blum-Shub algorithm for generating cryptographically secure pseudo-random bits.  Implement the algorithm as a program to reproduce the results on page 43.  That is, your program should:
+<ul>
+<li>Hardcode the values for <em>p</em> and <em>q</em>;
+<li>Compute <em>n</em> from those;
+<li>Using the value given for <em>x</em>, compute and print the values <em>x</em><sub>0</sub>, <em>x</em><sub>1</sub>, ..., <em>x</em><sub>8</sub>.  For the moment, don't worry about producing the values <em>b</em><sub>0</sub>, <em>b</em><sub>1</sub>, ..., <em>b</em><sub>8</sub>.
+</ul>
+Your answer will be a source file in Python or Java.  Please call it <code>bbsprng.{java,py}</code>.
+</p>
+<h2>Submission instructions</h2>
+<p>
+Please type responses to questions in a single document, which may be text, Microsoft Word, or PDF.  Give the programs you write names that will make it easy for me to figure out which program is for which problem.  Place all of the files into a zip file called <code>assignment2.zip</code> and submit that to the D2L submission folder provided for it.
+</p>
+<p>
+<em>Document last updated on January 16th, 2020.</em>
+</p>
+</div>
+</body>
+
+</html>

@@ -250,9 +250,11 @@ print("ciphertext: "+ result_str)
 
 import random
 def findPrime(n):
-    
+    primes = []
+    reject = 0
+
     # In a loop:
-    for i in range(n):
+    while n > 0:
         isPrime = True
         
         #Randomly generate an integer between 2**24 and 2**25
@@ -267,10 +269,14 @@ def findPrime(n):
                 
         # Terminate the loop if a prime is found
         if isPrime:
-            return (p,i+1)
+            primes.append((p,reject))
+            n-=1
+            reject = 0
+        else:
+            reject += 1
         
     # Print the prime and the number of times the loop repeated before finding a prime (no prime found = -1)        
-    return (-1,n)
+    return primes
      
 def fastMod(a,p):
     res = 1
@@ -283,7 +289,8 @@ def fastMod(a,p):
         a = (a*a) % p;
     return res
     
-findPrime(16)
+print(findPrime(16))
+
 
 
 # In[ ]:

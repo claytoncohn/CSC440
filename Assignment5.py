@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[63]:
+# In[1]:
 
 
 '''
@@ -44,9 +44,6 @@ def encrypt(plaintext, key):
     key = bin(key)[2:]
     while (len(key) < 9): key = "0" + key
 
-#     print("\nPlaintext: {0} ({1})".format(plaintext, int(plaintext,2)))
-#     print("\nKey: {0} ({1})".format(key,int(key,2)))
-    
     # First make sure arguments are without bounds
     if len(plaintext) not in range(0, 4096) or len(key) not in range(0, 512):
         print("Invalid lengths.")
@@ -71,10 +68,7 @@ def encrypt(plaintext, key):
     # Generate subkeys from key
     long_key = key * 2
     subkeys = [long_key[0:8], long_key[1:9], long_key[2:10], long_key[3:11]]
-#     print("\nSubkeys: {}".format(subkeys))
-    
-#     print("\nBlocks: {0}".format(blocks))
-    
+
     # Create ciphertext
     ciphertext = ""
     
@@ -84,7 +78,6 @@ def encrypt(plaintext, key):
         
         # Split block into left and right
         l, r = block[:len(block)//2], block[len(block)//2:]
-#         print("\nBlock {0}\nLeft: {1} ({2})\nRight: {3} ({4})".format(i,l,int(l,2),r,int(r,2)))
         
         # 4 rounds for simplified version
         for j in range (0,4):
@@ -108,36 +101,25 @@ def encrypt(plaintext, key):
             
             # Split bits and prepare for s-boxes
             r1, r2 = r[:len(r)//2], r[len(r)//2:] 
-#             print("r1: " + r1)
-#             print("r2: " + r2)
             
             s1row = int(r1[0])
             s1col = int(r1[1:],2)
-#             print("S1 row: {0}, S1 col: {1}".format(s1row,s1col))
     
             s2row = int(r2[0])
             s2col = int(r2[1:],2)
-#             print("S2 row: {0}, S2 col: {1}".format(s2row,s2col))
             
             sbox1_choice = s1[s1row][s1col]
             sbox2_choice = s2[s2row][s2col]
-#             print("S1 choice: {0}, S2 choice: {1}".format(sbox1_choice,sbox2_choice))
             
             #Output of function f is those 6 bits
             f = sbox1_choice + sbox2_choice
             
             # To get the new r, we need to xor f with the previous l
             r = xor(l_old,f,6)
-#             print("L: {0}, R: {1}, ".format(l,r,int(subkeys[j],2)))
-#             print("END Block {0} - Round {1}: L = {2} ({3}), R = {4} ({5}), Subkey = {6} ({7})" \
-#                   .format(i,j,l,int(l,2),r,int(r,2),subkeys[j],int(subkeys[j],2)))
-            
-#             print("\n")
-            
+                        
         # Add blocks to ciphertext
         ciphertext += l + r
     
-#     print("Final ciphertext: " + ciphertext)
     if len(ciphertext) == 0: return 0
     else: ciphertext = int(ciphertext, 2)
         
@@ -148,7 +130,6 @@ def encrypt(plaintext, key):
 # Helper function to use as E for expansion from 6 bits to 8
 def expand(s):
     result = s[0] + s[1] + s[3] + s[2] + s[3] + s[2] + s[4] + s[5]
-#     print(s + " expanded to " + result)
     return result
 
 # Helper function to xor two bit strings
@@ -162,11 +143,10 @@ def xor(s1, s2, n):
     zs = "0" * nZeros
     result = zs + result
     
-#     print(s1 + " XOR " +  s2 + " = " + result)
     return result
 
 
-# In[64]:
+# In[2]:
 
 
 def decrypt(ciphertext,key):
@@ -176,9 +156,6 @@ def decrypt(ciphertext,key):
 
     key = bin(key)[2:]
     while (len(key) < 9): key = "0" + key
-
-#     print("\nCiphertext: {0} ({1})".format(ciphertext, int(ciphertext,2)))
-#     print("\nKey: {0} ({1})".format(key,int(key,2)))
     
     # First make sure arguments are without bounds
     if len(ciphertext) not in range(0, 4096) or len(key) not in range(0, 512):
@@ -204,9 +181,6 @@ def decrypt(ciphertext,key):
     # Generate subkeys from key
     long_key = key * 2
     subkeys = [long_key[0:8], long_key[1:9], long_key[2:10], long_key[3:11]]
-#     print("\nSubkeys: {}".format(subkeys))
-    
-#     print("\nBlocks: {0}".format(blocks))
     
     # Create plaintext
     plaintext = ""
@@ -217,11 +191,9 @@ def decrypt(ciphertext,key):
         
         # Split block into left and right
         l, r = block[:len(block)//2], block[len(block)//2:]
-#         print("\nBlock {0}\nLeft: {1} ({2})\nRight: {3} ({4})".format(i,l,int(l,2),r,int(r,2)))
         
         # 4 rounds for simplified version
         for j in range(3,-1,-1):
-#             print("subkeys[{0}]: {1}".format(j,subkeys[j]))
             
             # 1. Next r = current l
             next_r = l
@@ -229,24 +201,18 @@ def decrypt(ciphertext,key):
             # 2. v = expand(next_r) ^ subkeys[i]
             next_r_expanded = expand(next_r)
             v = xor(next_r_expanded,subkeys[j],8)
-#             print("v = " + next_r_expanded + " ^ " + subkeys[j] + " = " + v)
     
             # Split bits and prepare for s-boxes
             r1, r2 = v[:len(v)//2], v[len(v)//2:] 
-#             print("r1: " + r1)
-#             print("r2: " + r2)
             
             s1row = int(r1[0])
             s1col = int(r1[1:],2)
-#             print("S1 row: {0}, S1 col: {1}".format(s1row,s1col))
     
             s2row = int(r2[0])
             s2col = int(r2[1:],2)
-#             print("S2 row: {0}, S2 col: {1}".format(s2row,s2col))
             
             sbox1_choice = s1[s1row][s1col]
             sbox2_choice = s2[s2row][s2col]
-#             print("S1 choice: {0}, S2 choice: {1}".format(sbox1_choice,sbox2_choice))
             
             #Output of function f is those 6 bits
             f = sbox1_choice + sbox2_choice
@@ -256,26 +222,18 @@ def decrypt(ciphertext,key):
             
             # Set r = next_r
             r = next_r
-            
-#             print("L: {0}, R: {1}, ".format(l,r,int(subkeys[j],2)))
-#             print("END Block {0} - Round {1}: L = {2} ({3}), R = {4} ({5}), Subkey = {6} ({7})" \
-#                   .format(i,j,l,int(l,2),r,int(r,2),subkeys[j],int(subkeys[j],2)))
-            
-#             print("\n")
-            
+                        
         # Prepend blocks to plaintext
         plaintext = l + r + plaintext
     
-#     print("Final plaintext: " + plaintext)
     if len(plaintext) == 0: return 0
     else: plaintext = int(plaintext, 2)
         
     # Return int plaintext
-    # print("\nPlaintext: {0}".format(plaintext))
     return plaintext
 
 
-# In[65]:
+# In[3]:
 
 
 # Run the encryption
@@ -288,7 +246,7 @@ else:
     print("Either your plaintext or key was not a deimal number. Please try again .")
 
 
-# In[66]:
+# In[4]:
 
 
 # Run the decryption
@@ -302,7 +260,7 @@ else:
     print("Either your ciphertext or key was not a deimal number. Please try again .")
 
 
-# In[77]:
+# In[5]:
 
 
 # Meet-in-the-middle attack:
@@ -331,21 +289,19 @@ def getKeys(plaintext,ciphertext):
                 candidates.append((i,j))
                 
     print("Total candidates: {0}".format(len(candidates)))
-          
-#     for i in range(len(candidates)):
-#         print("k1: {0}, k2: {1}".format(candidates[i][0], candidates[i][1]))
-        
+    print(str(candidates))
+    
     return candidates
 
 
-# In[78]:
+# In[6]:
 
 
 # Get the list of candidate keys
 candidates = getKeys(101,199)
 
 
-# In[92]:
+# In[7]:
 
 
 # Now that we have our candidate keys, we are going to test each pair on another plaintext/ciphertext pair
@@ -370,7 +326,7 @@ def verifyKeys(key_pairs, plaintext, ciphertext):
     return candidates
 
 
-# In[98]:
+# In[8]:
 
 
 # Check out list of candidates against the other plaintext/ciphertext pair
@@ -381,7 +337,7 @@ for i in range(len(verified_candidates)):
     print("(K1: {0}, K2: {1})".format(verified_candidates[i][0], verified_candidates[i][1]))
 
 
-# In[102]:
+# In[9]:
 
 
 '''
@@ -399,7 +355,7 @@ b2 = encrypt(b1,151) # Should be equal to 2816
 print("encrypt_test1: {0}\nencrypt_test2: {1}".format(a2,b2))
 
 
-# In[104]:
+# In[10]:
 
 
 '''
@@ -415,7 +371,7 @@ d2 = decrypt(d1,42) # Should be 110
 print("decrypt_test1: {0}\ndecrypt_test2: {1}".format(c2,d2))
 
 
-# In[164]:
+# In[11]:
 
 
 '''
